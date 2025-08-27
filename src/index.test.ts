@@ -1,6 +1,8 @@
-import { expect, test } from 'bun:test';
-import { hello } from './index';
+import { describe, expect, test } from 'vitest'
+import { hello } from './index'
 
-test('hello function', () => {
-  expect(hello()).toBe('Hello world!');
-});
+describe('hello function', () => {
+  test('should return Hello world!', () => {
+    expect(hello()).toBe('Hello world!')
+  })
+})

@@ -1,37 +1,39 @@
 # Bun + Changesets + Commitizen Template
 
-> A GitHub‑ready template that uses **Bun for everything** (dev, build, test),
-> **Commitizen + Conventional Commits** for clean history, **Commitlint +
-> Husky** for local enforcement, and **Changesets** for versioning and automated
-> release PRs. Comes with **GitHub Actions** for CI & publishing with npm
-> provenance.
+> A GitHub‑ready template that uses **Bun for dev & build** and **Vitest (not
+> Bun test) for testing**, **Commitizen + Conventional Commits** for clean
+> history, **Commitlint + Husky** for local enforcement, and **Changesets** for
+> versioning and automated release PRs. Comes with **GitHub Actions** for CI &
+> publishing with npm provenance.
 
 [![Use this template](https://img.shields.io/badge/Use%20this%20template-2ea44f?style=for-the-badge)](https://github.com/<USER_OR_ORG>/<REPO_NAME>/generate)
 
 ---
 
-## Table of Contents
+## 📚 Table of Contents
 
-- [Why this template](#why-this-template)
-- [Features](#features)
-- [Quick Start](#quick-start)
-- [Project Layout](#project-layout)
-- [Scripts](#scripts)
-- [GitHub Actions Workflows](#github-actions-workflows)
-- [Release Flow (Changesets)](#release-flow-changesets)
-- [Commit Flow (Commitizen + Commitlint)](#commit-flow-commitizen--commitlint)
-- [Best‑practice `.bunfig.toml`](#bestpractice-bunfigtoml)
-- [Pros / Cons / Gotchas](#pros--cons--gotchas)
-- [Publishing to npm (with provenance)](#publishing-to-npm-with-provenance)
-- [Monorepo Notes](#monorepo-notes)
-- [Troubleshooting](#troubleshooting)
-- [Security & Supply Chain tips](#security--supply-chain-tips)
-- [FAQ](#faq)
-- [License](#license)
+- [🎯 Why this template](#-why-this-template)
+- [✨ Features](#-features)
+- [⚡ Quick Start](#-quick-start)
+  - [🎯 Top 7 Essential Commands](#-top-7-essential-commands)
+  - [🚀 Getting Started](#-getting-started)
+- [📁 Project Layout](#-project-layout)
+- [📦 Scripts](#-scripts)
+- [🤖 GitHub Actions Workflows](#-github-actions-workflows)
+- [🚀 Release Flow (Changesets)](#-release-flow-changesets)
+- [📝 Commit Flow (Commitizen + Commitlint)](#-commit-flow-commitizen--commitlint)
+- [⚡ Best‑practice `.bunfig.toml`](#-bestpractice-bunfigtoml)
+- [👍 Pros / Cons / Gotchas](#-pros--cons--gotchas)
+- [📦 Publishing to npm (with provenance)](#-publishing-to-npm-with-provenance)
+- [🏢 Monorepo Notes](#-monorepo-notes)
+- [🔧 Troubleshooting](#-troubleshooting)
+- [🔒 Security & Supply Chain tips](#-security--supply-chain-tips)
+- [❓ FAQ](#-faq)
+- [📄 License](#-license)
 
 ---
 
-## Why this template
+## 🎯 Why this template
 
 - **Speed**: Bun makes installs, dev, and tests snappy.
 - **Consistency**: Commitizen + Conventional Commits + Commitlint keep history
@@ -45,9 +47,70 @@
 
 ---
 
-## Features
+## 🏗️ Architectural Intents
 
-- **Bun‑native** scripts for dev/build/test.
+> Key decisions that shape this template. Full details in
+> [`.agent-os/product/decisions.md`](.agent-os/product/decisions.md)
+
+### Core Principles
+
+- **ADHD-Optimized**: Sub-50ms feedback loops, clear visual indicators, reduced
+  cognitive load
+- **Enterprise-Ready**: Built-in security scanning, supply chain protection,
+  compliance features
+- **Bun-First**: Native Bun runtime for 3-5x performance gains over Node.js
+  equivalents
+
+### Key Design Decisions
+
+- **Vitest over Bun test**: Richer ecosystem, better mocking APIs, familiar to
+  developers
+- **Single-threaded test mode**: Mitigates worker termination issues (see
+  vitest.config.ts)
+- **Relaxed complexity thresholds**: Balanced for real-world code while
+  maintaining readability
+- **Comprehensive scripts**: 200+ named scripts for every scenario,
+  ADHD-friendly organization
+- **Security by default**: Trivy scanning, npm provenance, SBOM generation
+  built-in
+
+### Configuration Philosophy
+
+- **Inline documentation**: Each config file contains brief "why" comments to
+  prevent churn
+- **Progressive enhancement**: Start simple, scale to monorepo without rewrites
+- **Explicit over implicit**: Clear, verbose configurations over magic defaults
+
+---
+
+## ⚙️ Runtime Requirements
+
+> **⚠️ Bun-only Runtime**: This template is designed specifically for the
+> [Bun runtime](https://bun.sh/).
+>
+> - **Development & Build**: Requires Bun 1.1.38 or higher
+> - **Node.js Compatibility**: The built output (`dist-node/`) targets Node.js
+>   consumers, but development requires Bun
+> - **Installation**: [Install Bun](https://bun.sh/docs/installation) before
+>   using this template
+
+If you encounter the error "This project requires the Bun runtime", install Bun
+first:
+
+```bash
+# macOS/Linux
+curl -fsSL https://bun.sh/install | bash
+
+# Windows
+powershell -c "irm bun.sh/install.ps1 | iex"
+```
+
+---
+
+## ✨ Features
+
+- **Bun for dev & build, Vitest for testing** (fast feedback, rich matcher &
+  mocking APIs).
 - **Husky** hooks: `pre-commit` (lint/format/typecheck) & `commit-msg`
   (commitlint).
 - **Commitizen** (`git cz`) with **cz-git** prompts.
@@ -60,7 +123,24 @@
 
 ---
 
-## Quick Start
+## ⚡ Quick Start
+
+### 🎯 Top 7 Essential Commands
+
+| Command          | Description              | When to Use               |
+| ---------------- | ------------------------ | ------------------------- |
+| `bun test`       | Run tests once           | Before committing changes |
+| `bun test:watch` | Watch mode testing       | During development        |
+| `bun dev`        | Start development server | Begin coding session      |
+| `bun build:all`  | Build everything         | Prepare for production    |
+| `bun lint:fix`   | Auto-fix all issues      | Clean up code             |
+| `bun commit`     | Guided commit wizard     | Ready to commit           |
+| `bun validate`   | Full validation suite    | Final check before push   |
+
+> 💡 **ADHD Tip**: These 7 commands cover 90% of daily development. Bookmark
+> this section!
+
+### 🚀 Getting Started
 
 ```bash
 # 1) Download this repo (or "Use this template" in GitHub)
@@ -85,7 +165,7 @@ gh api --method PATCH "repos/<USER_OR_ORG>/<REPO_NAME>" -f is_template=true
 
 ---
 
-## Project Layout
+## 📁 Project Layout
 
 ```
 .github/workflows/
@@ -108,36 +188,101 @@ package.json       # starter (Bun-first), private by default
 
 ---
 
-## Scripts
+## 📦 Scripts
+
+> **Quick Access**: Use the
+> [Top 7 Essential Commands](#-top-7-essential-commands) for daily
+> development.  
+> Need more? Explore the complete script collection below.
+
+<details>
+<summary><strong>🔍 View All Scripts (100+ commands)</strong></summary>
+
+### Script Categories
+
+| Prefix       | Category    | Description                             |
+| ------------ | ----------- | --------------------------------------- |
+| `dev:*`      | Development | Local development servers and debugging |
+| `build:*`    | Building    | Compilation and bundling tasks          |
+| `test:*`     | Testing     | Test execution and coverage             |
+| `lint:*`     | Linting     | Code quality checks                     |
+| `format:*`   | Formatting  | Code style enforcement                  |
+| `security:*` | Security    | Vulnerability scanning and auditing     |
+| `perf:*`     | Performance | Benchmarking and profiling              |
+| `release:*`  | Releasing   | Version management and publishing       |
+
+### Common Scripts
 
 ```jsonc
 {
   "scripts": {
+    // 🚀 Development
     "dev": "bun --watch src/index.ts",
-    "build": "bun build src/index.ts --outdir=dist --target=node --format=esm,cjs",
-    "start": "bun dist/index.js",
-    "test": "bun test",
+    "dev:debug": "bun --inspect src/index.ts",
+    "dev:hot": "bun --hot src/index.ts",
+    "dev:smol": "bun --smol --watch src/index.ts",
+
+    // 🏗️ Building
+    "build": "bun build src/index.ts --outdir=dist --target=bun",
+    "build:all": "bun run build:node && bun run build:types && bun run build",
+    "build:node": "tsc -p tsconfig.build.json --outDir dist-node",
+    "build:types": "tsc -p tsconfig.types.json",
+    "build:watch": "bun build src/index.ts --outdir=dist --target=bun --watch",
+    "build:analyze": "bun build src/index.ts --outdir=dist --target=bun --analyze",
+
+    // 🧪 Testing
+    "test": "vitest",
+    "test:ci": "vitest run --coverage --reporter=dot --reporter=junit",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest watch",
+    "test:changed": "vitest --changed --run",
+    "test:debug": "vitest run --reporter=verbose --no-coverage --run",
+    "test:ui": "vitest ui",
+
+    // ✨ Quality
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:check": "eslint . --cache --max-warnings 0",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "tsc --noEmit",
-    "cz": "git-cz",
+    "typecheck": "tsc --noEmit -p tsconfig.build.json",
+    "typecheck:watch": "tsc --noEmit -p tsconfig.build.json --watch",
+
+    // 🔒 Security
+    "security:audit": "bun audit || true",
+    "security:fix": "bun audit fix",
+    "security:sbom": "bunx @cyclonedx/cdxgen -o sbom.json -t js .",
+
+    // ⚡ Performance
+    "perf:build": "hyperfine --warmup 1 'bun run build'",
+    "perf:startup": "hyperfine --warmup 3 'bun run src/index.ts'",
+    "bundle:size": "bunx size-limit",
+
+    // 🚢 Git & Release
     "commit": "git-cz",
     "release": "bunx changeset",
-    "release:version": "bunx changeset version",
     "release:publish": "bunx changeset publish",
+    "release:version": "bunx changeset version",
+
+    // 🎯 Combined Commands
+    "validate": "bun run lint:check && bun run format:check && bun run typecheck && bun run validate:types && bun run test:ci",
+    "clean:build": "rm -rf dist dist-node dist-types",
+    "prepare": "husky",
   },
 }
 ```
 
-- Use **`bun run commit`** to open the Commitizen wizard.
-- Use **`bun run release`** to create a changeset (choose patch/minor/major).
+**Pro Tips**:
+
+- Use **`bun run commit`** for the Commitizen wizard
+- Use **`bun run test:changed`** for ultra-fast changed-file feedback
+- Use **`bun run validate`** before pushing to catch all issues
+
+</details>
 
 ---
 
-## GitHub Actions Workflows
+## 🤖 GitHub Actions Workflows
 
 ### CI (`.github/workflows/ci.yml`)
 
@@ -160,7 +305,7 @@ package.json       # starter (Bun-first), private by default
 
 ---
 
-## Release Flow (Changesets)
+## 🚀 Release Flow (Changesets)
 
 1. Developer runs `bun run release` and selects bumps (patch/minor/major). This
    creates `.changeset/*.md` files.
@@ -177,7 +322,7 @@ package.json       # starter (Bun-first), private by default
 
 ---
 
-## Commit Flow (Commitizen & Commitlint)
+## 📝 Commit Flow (Commitizen & Commitlint)
 
 - Run `bun run commit` (or `git cz`) → choose type, scope, subject; Commitizen
   writes a proper Conventional Commit.
@@ -187,7 +332,7 @@ package.json       # starter (Bun-first), private by default
 
 ---
 
-## Best‑practice `.bunfig.toml`
+## ⚡ Best‑practice `.bunfig.toml`
 
 A sensible default you can drop into the repo root:
 
@@ -215,11 +360,12 @@ loading for `bun run` commands. Keep it minimal and team-friendly.
 
 ---
 
-## Pros / Cons / Gotchas
+## 👍 Pros / Cons / Gotchas
 
 ### ✅ Pros
 
-- **One toolchain** (Bun) for dev/build/test → less config drift, faster CI.
+- **Focused toolchain**: Bun for dev/build + Vitest for testing → fast
+  iterations & minimal config drift.
 - **Commit hygiene** via Commitizen + commitlint → clean history &
   auto‑generated changelogs read better.
 - **Automated release**: Changesets PR → reviewable version bumps & changelog →
@@ -254,7 +400,7 @@ loading for `bun run` commands. Keep it minimal and team-friendly.
 
 ---
 
-## Publishing to npm (with provenance)
+## 📦 Publishing to npm (with provenance)
 
 1. In `package.json`: set `"private": false`, point `main/types/exports` to your
    built files in `dist/`.
@@ -274,7 +420,7 @@ loading for `bun run` commands. Keep it minimal and team-friendly.
 
 ---
 
-## Monorepo Notes
+## 🏢 Monorepo Notes
 
 - Add `workspaces` to root `package.json`, e.g.:
   ```json
@@ -288,7 +434,7 @@ loading for `bun run` commands. Keep it minimal and team-friendly.
 
 ---
 
-## Troubleshooting
+## 🔧 Troubleshooting
 
 ### “error: could not determine executable to run for package changeset”
 
@@ -322,7 +468,7 @@ loading for `bun run` commands. Keep it minimal and team-friendly.
 
 ---
 
-## Security & Supply Chain tips
+## 🔒 Security & Supply Chain tips
 
 - Run `bun install --frozen-lockfile` in CI to avoid accidental drift.
 - Keep the commitlint job to enforce Conventional Commits end‑to‑end.
@@ -333,7 +479,7 @@ loading for `bun run` commands. Keep it minimal and team-friendly.
 
 ---
 
-## FAQ
+## ❓ FAQ
 
 **Q: Can I use this template for an app that will never be published?**  
 A: Yes. Keep `"private": true`. You still get clean commits, release notes, and
@@ -347,12 +493,12 @@ A: The template uses `@changesets/changelog-github`, which writes entries into
 A: For most cases no, but if your code must be executed under Node by consumers
 (libraries), add a Node job in CI to validate.
 
-**Q: Can I add Playwright or Vitest instead of Bun test?**  
-A: Yes. You can run `bun x vitest` or `bun x playwright test` alongside
-`bun test` if specific features are needed.
+**Q: Can I add Playwright for browser E2E?**  
+A: Yes. Add `bunx playwright test` (keep unit tests in Vitest). They coexist;
+consider a separate `e2e` folder & workflow.
 
 ---
 
-## License
+## 📄 License
 
 MIT — or choose your own. Add a `LICENSE` file at the repo root.
